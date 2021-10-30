@@ -1,0 +1,28 @@
+version: "3"
+services:
+  react-app:
+    image: alexward5/react-app
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # volume syntax is local-source:container-dir
+    volumes:
+      #  if no local source provided, use container dir
+      - /usr/app/node_modules
+      - ./:/usr/app
+    stdin_open: true
+    tty: true
+    restart: always
+    ports:
+      - "3000:3000"
+  tests:
+    image: alexward5/tests
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    # volume syntax is local-source:container-dir
+    volumes:
+      #  if no local source provided, use container dir
+      - /usr/app/node_modules
+      - ./:/usr/app
+    command: ["npm", "run", "test"]
